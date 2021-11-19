@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:12.8-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+  app:
+    build:
+      context: '.'
+    environment:
+      CONFIG: 'production'
+      POSTGRES_PASSWORD: postgres
+      DATABASE_URL: 'postgresql://postgres:postgres@db/postgres'
+    ports:
+      - '8000:80'
+    command: ["./docker/wait-for-it.sh", "db:5432", "--", "./docker/runserver.sh"]
