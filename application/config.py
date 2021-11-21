@@ -9,7 +9,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URL = 'sqlite:///' + os.path.join(BASEDIR, '../db.sqlite3')
+    SQLALCHEMY_DATABASE_URL = 'sqlite:///' + os.path.join(os.path.dirname(BASEDIR), 'db.sqlite3')
 
 
 class ProdConfig(Config):
@@ -19,7 +19,7 @@ class ProdConfig(Config):
 
 class TestConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URL = 'sqlite:///' + os.path.join(BASEDIR, '../db.test.sqlite3')
+    SQLALCHEMY_DATABASE_URL = 'sqlite:///' + os.path.join(os.path.dirname(BASEDIR), 'db.test.sqlite3')
 
 
 def get_config():
