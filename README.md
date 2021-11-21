@@ -27,3 +27,9 @@ open http://localhost:8000/docs
 # PowerShell
 start http://localhost:8000/docs
 ```
+
+## Unit tests
+
+```shell script
+pytest
+```

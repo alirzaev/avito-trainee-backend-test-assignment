@@ -17,10 +17,16 @@ class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URL = os.getenv('DATABASE_URL')
 
 
+class TestConfig(Config):
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URL = 'sqlite:///' + os.path.join(BASEDIR, '../db.test.sqlite3')
+
+
 def get_config():
     config_by_name = dict(
         development=DevelopmentConfig,
-        production=ProdConfig
+        production=ProdConfig,
+        test=TestConfig
     )
 
     return config_by_name[os.getenv('CONFIG', 'development')]
