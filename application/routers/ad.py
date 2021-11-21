@@ -15,8 +15,8 @@ router = APIRouter(prefix='/ad')
 
 @router.get('/', response_model=List[AdShort])
 def get_ads(
-    date_order: Optional[SortOrder] = SortOrder.DESC,
-    price_order: Optional[SortOrder] = SortOrder.DESC,
+    date_order: Optional[SortOrder] = None,
+    price_order: Optional[SortOrder] = None,
     page: Optional[int] = Query(1, ge=1),
     db: Session = Depends(get_db)
 ):    

@@ -15,15 +15,22 @@ class SortOrder(str, Enum):
     DESC = 'desc'
 
 
-def get_ads(db: Session, date_order: SortOrder, price_order: SortOrder, page: int) -> List[Ad]:
+def get_ads(db: Session, date_order: Optional[SortOrder], price_order: Optional[SortOrder], page: int) -> List[Ad]:
     order = {
         SortOrder.ASC: asc,
         SortOrder.DESC: desc
     }
 
-    return db.query(Ad) \
-        .order_by(order[date_order](Ad.date)) \
-        .order_by(order[price_order](Ad.price)) \
+    query = db.query(Ad)
+    order_criteria = []
+
+    if date_order is not None:
+        order_criteria.append(order[date_order](Ad.date))
+    if price_order is not None:
+        order_criteria.append(order[price_order](Ad.price))
+    query = query.order_by(*order_criteria)
+    
+    return query \
         .join(Photo) \
         .offset(PAGE_SIZE * (page - 1)) \
         .limit(PAGE_SIZE)
