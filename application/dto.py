@@ -16,11 +16,11 @@ class Photo(BaseModel):
 
 
 class AdIn(BaseModel):
-    name: constr(max_length=200)
+    name: constr(min_length=5, max_length=200)
 
-    description: constr(max_length=1000)
+    description: constr(min_length=10, max_length=1000)
 
-    price: condecimal(ge=0.01, max_digits=9, decimal_places=2)
+    price: condecimal(ge=1.00, max_digits=9, decimal_places=2)
 
     photos: conlist(Photo, min_items=1, max_items=3)
 
