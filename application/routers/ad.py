@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Path, Query
 from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
 
@@ -10,14 +10,14 @@ from ..crud import SortOrder
 from ..database import get_db
 from ..dto import AdCreated, AdIn, AdOut, AdShort, Message
 
-router = APIRouter(prefix='/ad')
+router = APIRouter(prefix='/ad', tags=['ad'])
 
 
-@router.get('/', response_model=List[AdShort])
+@router.get('/', response_model=List[AdShort], summary='Get a paginated list of ads')
 def get_ads(
-    date_order: Optional[SortOrder] = None,
-    price_order: Optional[SortOrder] = None,
-    page: Optional[int] = Query(1, ge=1),
+    date_order: Optional[SortOrder] = Query(None, title='Sort by price'),
+    price_order: Optional[SortOrder] = Query(None, title='Sort by date'),
+    page: Optional[int] = Query(1, ge=1, title='Page number. 10 items per page'),
     db: Session = Depends(get_db)
 ):    
     return [{
@@ -28,7 +28,7 @@ def get_ads(
     } for ad in crud.get_ads(db, date_order, price_order, page)]
 
 
-@router.post('/', status_code=201, response_model=AdCreated)
+@router.post('/', status_code=201, response_model=AdCreated, summary='Create a new ad')
 def add_ad(ad: AdIn, db: Session = Depends(get_db)):
     ad_id = crud.save_ad(db, ad)
 
@@ -40,12 +40,12 @@ class ExtraFields(Enum):
     PHOTOS = 'photos'
 
 
-@router.get('/{ad_id}', response_model=AdOut, responses={
+@router.get('/{ad_id}', response_model=AdOut, summary='Get an ad by ID', responses={
     404: {'model': Message, 'description': 'Ad not found'}
 })
 def get_ad_by_id(
-    ad_id: int,
-    fields: Optional[List[ExtraFields]] = Query([]),
+    ad_id: int = Path(..., title="Ad ID"),
+    fields: Optional[List[ExtraFields]] = Query([], title='Additional fields'),
     db: Session = Depends(get_db)
 ):
     ad = crud.get_ad_by_id(db, ad_id)

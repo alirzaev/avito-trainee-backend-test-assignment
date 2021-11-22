@@ -6,7 +6,11 @@ from .routers import ad
 
 config = get_config()
 
-application = FastAPI(debug=config.DEBUG)
+application = FastAPI(
+    debug=config.DEBUG,
+    title='Ad service',
+    description='A service for storing and submitting ads'
+)
 application.include_router(ad.router)
 
 

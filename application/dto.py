@@ -1,15 +1,15 @@
 from decimal import Decimal
 from typing import List, Optional
 
-from pydantic import BaseModel, HttpUrl, conlist, constr, condecimal
+from pydantic import BaseModel, Field, HttpUrl, conlist, constr, condecimal
 
 
 class Message(BaseModel):
-    detail: str
+    detail: str = Field(..., example='NOT_FOUND')
 
 
 class Photo(BaseModel):
-    url: HttpUrl
+    url: HttpUrl = Field(..., example='https://via.placeholder.com/1920x1080.png')
 
     class Config:
         orm_mode = True
@@ -24,9 +24,26 @@ class AdIn(BaseModel):
 
     photos: conlist(Photo, min_items=1, max_items=3)
 
+    class Config:
+        schema_extra = {
+            'example': {
+                'name': 'Wireless Mouse',
+                'description': '2.4 GHz Wireless Cordless Mouse Mice Optical Scroll For PC Laptop Computer + USB',
+                'price': '500',
+                'photos': [
+                    {
+                        'url': 'https://via.placeholder.com/1920x1080.png?text=Mouse1'
+                    },
+                    {
+                        'url': 'https://via.placeholder.com/1920x1080.png?text=Mouse2'
+                    }
+                ]
+            }
+        }
+
 
 class AdCreated(BaseModel):
-    id: int
+    id: int = Field(..., title='Ad ID', example=1)
 
 
 class AdShort(BaseModel):
@@ -36,7 +53,18 @@ class AdShort(BaseModel):
 
     price: Decimal
 
-    main_photo: Photo
+    main_photo: Photo = Field(..., title='Main photo')
+
+    class Config:
+        schema_extra = {
+            'example': {
+                'name': 'Wireless Mouse',
+                'price': '500',
+                'main_photo': {
+                    'url': 'https://via.placeholder.com/1920x1080.png?text=Mouse1'
+                }
+            }
+        }
 
 
 class AdOut(BaseModel):
@@ -50,10 +78,29 @@ class AdOut(BaseModel):
 
     photos: Optional[List[Photo]] = None
 
-    main_photo: Photo
+    main_photo: Photo = Field(..., title='Main photo')
 
     class Config:
         orm_mode = True
+
+        schema_extra = {
+            'example': {
+                'name': 'Wireless Mouse',
+                'description': '2.4 GHz Wireless Cordless Mouse Mice Optical Scroll For PC Laptop Computer + USB',
+                'price': '500',
+                'main_photo': {
+                    'url': 'https://via.placeholder.com/1920x1080.png?text=Mouse1'
+                },
+                'photos': [
+                    {
+                        'url': 'https://via.placeholder.com/1920x1080.png?text=Mouse1'
+                    },
+                    {
+                        'url': 'https://via.placeholder.com/1920x1080.png?text=Mouse2'
+                    }
+                ]
+            }
+        }
     
     def dict(self, *args, **kwargs) -> str:
         kwargs['exclude_none'] = True
