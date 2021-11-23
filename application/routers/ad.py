@@ -15,8 +15,8 @@ router = APIRouter(prefix='/ad', tags=['ad'])
 
 @router.get('/', response_model=List[AdShort], summary='Get a paginated list of ads')
 def get_ads(
-    date_order: Optional[SortOrder] = Query(None, title='Sort by price'),
-    price_order: Optional[SortOrder] = Query(None, title='Sort by date'),
+    date_order: Optional[SortOrder] = Query(None, title='Sort by date'),
+    price_order: Optional[SortOrder] = Query(None, title='Sort by price'),
     page: Optional[int] = Query(1, ge=1, title='Page number. 10 items per page'),
     db: Session = Depends(get_db)
 ):    
@@ -30,9 +30,9 @@ def get_ads(
 
 @router.post('/', status_code=201, response_model=AdCreated, summary='Create a new ad')
 def add_ad(ad: AdIn, db: Session = Depends(get_db)):
-    ad_id = crud.save_ad(db, ad)
+    ad = crud.save_ad(db, ad)
 
-    return AdCreated(id=ad_id)
+    return ad
 
 
 class ExtraFields(Enum):
@@ -40,9 +40,15 @@ class ExtraFields(Enum):
     PHOTOS = 'photos'
 
 
-@router.get('/{ad_id}', response_model=AdOut, summary='Get an ad by ID', responses={
-    404: {'model': Message, 'description': 'Ad not found'}
-})
+@router.get(
+    '/{ad_id}',
+    response_model=AdOut,
+    response_model_exclude_none=True,
+    summary='Get an ad by ID',
+    responses={
+        404: {'model': Message, 'description': 'Ad not found'}
+    }
+)
 def get_ad_by_id(
     ad_id: int = Path(..., title="Ad ID"),
     fields: Optional[List[ExtraFields]] = Query([], title='Additional fields'),

@@ -21,28 +21,28 @@ def ad_sample_input():
 
 
 def test_get_ad_success(client, test_db, ad_sample_input):
-    ad_id = crud.save_ad(test_db, dto.AdIn(**ad_sample_input))
+    ad = crud.save_ad(test_db, dto.AdIn(**ad_sample_input))
 
-    response = client.get(f'/ad/{ad_id}/')
+    response = client.get(f'/ad/{ad.id}/')
 
     assert response.status_code == 200
 
     data = response.json()
-    assert data['id'] == ad_id
+    assert data['id'] == ad.id
     assert data['name'] == ad_sample_input['name']
     assert data['price'] == ad_sample_input['price']
     assert data['main_photo'] == ad_sample_input['photos'][0]
 
 
 def test_get_ad_with_description_success(client, test_db, ad_sample_input):
-    ad_id = crud.save_ad(test_db, dto.AdIn(**ad_sample_input))
+    ad = crud.save_ad(test_db, dto.AdIn(**ad_sample_input))
 
-    response = client.get(f'/ad/{ad_id}/', params={'fields': ['description']})
+    response = client.get(f'/ad/{ad.id}/', params={'fields': ['description']})
 
     assert response.status_code == 200
 
     data = response.json()
-    assert data['id'] == ad_id
+    assert data['id'] == ad.id
     assert data['name'] == ad_sample_input['name']
     assert data['description'] == ad_sample_input['description']
     assert data['price'] == ad_sample_input['price']
@@ -50,14 +50,14 @@ def test_get_ad_with_description_success(client, test_db, ad_sample_input):
 
 
 def test_get_ad_with_photos_success(client, test_db, ad_sample_input):
-    ad_id = crud.save_ad(test_db, dto.AdIn(**ad_sample_input))
+    ad = crud.save_ad(test_db, dto.AdIn(**ad_sample_input))
 
-    response = client.get(f'/ad/{ad_id}/', params={'fields': ['photos']})
+    response = client.get(f'/ad/{ad.id}/', params={'fields': ['photos']})
 
     assert response.status_code == 200
 
     data = response.json()
-    assert data['id'] == ad_id
+    assert data['id'] == ad.id
     assert data['name'] == ad_sample_input['name']
     assert data['price'] == ad_sample_input['price']
     assert data['main_photo'] == ad_sample_input['photos'][0]
@@ -65,14 +65,14 @@ def test_get_ad_with_photos_success(client, test_db, ad_sample_input):
 
 
 def test_get_ad_with_description_and_photos_success(client, test_db, ad_sample_input):
-    ad_id = crud.save_ad(test_db, dto.AdIn(**ad_sample_input))
+    ad = crud.save_ad(test_db, dto.AdIn(**ad_sample_input))
 
-    response = client.get(f'/ad/{ad_id}/', params={'fields': ['photos', 'description']})
+    response = client.get(f'/ad/{ad.id}/', params={'fields': ['photos', 'description']})
 
     assert response.status_code == 200
 
     data = response.json()
-    assert data['id'] == ad_id
+    assert data['id'] == ad.id
     assert data['name'] == ad_sample_input['name']
     assert data['description'] == ad_sample_input['description']
     assert data['price'] == ad_sample_input['price']

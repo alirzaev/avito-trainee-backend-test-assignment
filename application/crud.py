@@ -40,7 +40,7 @@ def get_ad_by_id(db: Session, id: int) -> Optional[Ad]:
     return db.query(Ad).get(id)
 
 
-def save_ad(db: Session, ad: AdIn) -> int:
+def save_ad(db: Session, ad: AdIn) -> Ad:
     ad_item = Ad(
         name=ad.name,
         description=ad.description,
@@ -51,4 +51,4 @@ def save_ad(db: Session, ad: AdIn) -> int:
     db.commit()
     db.refresh(ad_item)
 
-    return ad_item.id
+    return ad_item

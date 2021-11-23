@@ -55,10 +55,9 @@ def test_get_ads_empty_db(client, test_db):
 
 
 def test_get_ads_price_asc(client, test_db, ads_small_input, page, offset):
-    ids = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
+    ads = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
 
-    for i, ad_id in enumerate(ids):
-        ad = crud.get_ad_by_id(test_db, ad_id)
+    for i, ad in enumerate(ads):
         ad.date = datetime.datetime(2021, 1, 1, 0, 0, i)
         test_db.add(ad)
         test_db.commit()
@@ -82,10 +81,9 @@ def test_get_ads_price_asc(client, test_db, ads_small_input, page, offset):
 
 
 def test_get_ads_price_desc(client, test_db, ads_small_input, page, offset):
-    ids = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
+    ads = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
 
-    for i, ad_id in enumerate(ids):
-        ad = crud.get_ad_by_id(test_db, ad_id)
+    for i, ad in enumerate(ads):
         ad.date = datetime.datetime(2021, 1, 1, 0, 0, i)
         test_db.add(ad)
         test_db.commit()
@@ -109,10 +107,9 @@ def test_get_ads_price_desc(client, test_db, ads_small_input, page, offset):
 
 
 def test_get_ads_date_asc(client, test_db, ads_small_input, page, offset):
-    ids = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
+    ads = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
 
-    for i, ad_id in enumerate(ids):
-        ad = crud.get_ad_by_id(test_db, ad_id)
+    for i, ad in enumerate(ads):
         ad.date = datetime.datetime(2021, 1, 1, 0, 0, i)
         test_db.add(ad)
         test_db.commit()
@@ -136,10 +133,9 @@ def test_get_ads_date_asc(client, test_db, ads_small_input, page, offset):
 
 
 def test_get_ads_date_desc(client, test_db, ads_small_input, page, offset):
-    ids = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
+    ads = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
 
-    for i, ad_id in enumerate(ids):
-        ad = crud.get_ad_by_id(test_db, ad_id)
+    for i, ad in enumerate(ads):
         ad.date = datetime.datetime(2021, 1, 1, 0, 0, i)
         test_db.add(ad)
         test_db.commit()
@@ -163,10 +159,9 @@ def test_get_ads_date_desc(client, test_db, ads_small_input, page, offset):
 
 
 def test_get_ads_date_asc_price_asc(client, test_db, ads_small_input, page, offset):
-    ids = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
+    ads = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
 
-    for i, ad_id in enumerate(ids):
-        ad = crud.get_ad_by_id(test_db, ad_id)
+    for i, ad in enumerate(ads):
         ad.date = datetime.datetime(2021, 1, 1, 0, 0, i)
         test_db.add(ad)
         test_db.commit()
@@ -191,10 +186,9 @@ def test_get_ads_date_asc_price_asc(client, test_db, ads_small_input, page, offs
 
 
 def test_get_ads_date_desc_price_desc(client, test_db, ads_small_input, page, offset):
-    ids = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
+    ads = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_small_input]
 
-    for i, ad_id in enumerate(ids):
-        ad = crud.get_ad_by_id(test_db, ad_id)
+    for i, ad in enumerate(ads):
         ad.date = datetime.datetime(2021, 1, 1, 0, 0, i)
         test_db.add(ad)
         test_db.commit()
@@ -220,10 +214,9 @@ def test_get_ads_date_desc_price_desc(client, test_db, ads_small_input, page, of
 
 def test_get_ads_pagination(client, test_db, ads_large_input):
     page = 1
-    ids = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_large_input]
+    ads = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_large_input]
 
-    for i, ad_id in enumerate(ids):
-        ad = crud.get_ad_by_id(test_db, ad_id)
+    for i, ad in enumerate(ads):
         ad.date = datetime.datetime(2021, 1, 1, 0, 0, i)
         test_db.add(ad)
         test_db.commit()
@@ -248,10 +241,9 @@ def test_get_ads_pagination(client, test_db, ads_large_input):
 
 def test_get_ads_pagination_out_of_range(client, test_db, ads_large_input):
     page = len(ads_large_input) // crud.PAGE_SIZE + 2 # the page after the last non-empty page
-    ids = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_large_input]
+    ads = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_large_input]
 
-    for i, ad_id in enumerate(ids):
-        ad = crud.get_ad_by_id(test_db, ad_id)
+    for i, ad in enumerate(ads):
         ad.date = datetime.datetime(2021, 1, 1, 0, 0, i)
         test_db.add(ad)
         test_db.commit()
@@ -271,10 +263,9 @@ def test_get_ads_pagination_out_of_range(client, test_db, ads_large_input):
 
 def test_get_ads_pagination_negative_page_number(client, test_db, ads_large_input):
     page = -1
-    ids = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_large_input]
+    ads = [crud.save_ad(test_db, dto.AdIn(**ad)) for ad in ads_large_input]
 
-    for i, ad_id in enumerate(ids):
-        ad = crud.get_ad_by_id(test_db, ad_id)
+    for i, ad in enumerate(ads):
         ad.date = datetime.datetime(2021, 1, 1, 0, 0, i)
         test_db.add(ad)
         test_db.commit()

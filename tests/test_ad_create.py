@@ -1,7 +1,6 @@
 import pytest
 
-from application import crud, dto
-from application.database.models import Ad, Photo
+from application import crud
 
 
 @pytest.fixture

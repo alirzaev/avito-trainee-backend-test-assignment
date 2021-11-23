@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 from application.config import TestConfig as config
 from application.database import Base, get_db
-from application.main import application
+from application.asgi import application
 
 SQLALCHEMY_DATABASE_URL = config.SQLALCHEMY_DATABASE_URL
 

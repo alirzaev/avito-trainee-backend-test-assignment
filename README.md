@@ -10,7 +10,7 @@
 pip install -r requirements.txt
 
 alembic upgrade head
-python -m application.main
+python -m application.asgi
 ```
 
 ### Docker
