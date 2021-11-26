@@ -3,23 +3,6 @@ import pytest
 from application import crud
 
 
-@pytest.fixture
-def ad_sample_input():
-    return {
-        'name': "Ad's name",
-        'description': "Ad's description",
-        'price': 100,
-        'photos': [
-            {
-                'url': 'http://example.com/1.jpg'
-            },
-            {
-                'url': 'http://example.com/2.jpg'
-            }
-        ]
-    }
-
-
 def test_ad_create_success(client, test_db, ad_sample_input):
     response = client.post('/ad/', json=ad_sample_input)
 

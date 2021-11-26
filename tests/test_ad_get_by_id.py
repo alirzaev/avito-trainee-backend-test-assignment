@@ -3,23 +3,6 @@ import pytest
 from application import crud, dto
 
 
-@pytest.fixture
-def ad_sample_input():
-    return {
-        'name': "Ad's name",
-        'description': "Ad's description",
-        'price': 100,
-        'photos': [
-            {
-                'url': 'http://example.com/1.jpg'
-            },
-            {
-                'url': 'http://example.com/2.jpg'
-            }
-        ]
-    }
-
-
 def test_get_ad_success(client, test_db, ad_sample_input):
     ad = crud.save_ad(test_db, dto.AdIn(**ad_sample_input))
 
