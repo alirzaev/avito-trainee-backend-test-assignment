@@ -16,17 +16,14 @@ python -m application.asgi
 ### Docker
 
 ```shell script
-docker-compose up -d
-
-# Linux
-x-www-browser http://localhost:8000/docs
-
-# macOS
-open http://localhost:8000/docs
-
-# PowerShell
-start http://localhost:8000/docs
+docker-compose up
 ```
+
+## API documentation
+
+Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+ReDoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
 ## Unit tests
 
